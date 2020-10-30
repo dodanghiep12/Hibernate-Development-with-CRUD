@@ -31,6 +31,60 @@ public class MainApplication {
         }
     }
 
+    private static void updateFirstName (int id, String firstName) {
+
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Employee.class)
+                .buildSessionFactory();
+
+        try {
+            Session session = factory.getCurrentSession();
+            session.beginTransaction();
+
+            Employee myEmployee = session.get(Employee.class, id);
+            myEmployee.setFirstName(firstName);
+            session.getTransaction().commit();
+        } finally {
+            factory.close();
+        }
+    }
+
+    private static void updateLastName (int id, String lastName) {
+
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Employee.class)
+                .buildSessionFactory();
+
+        try {
+            Session session = factory.getCurrentSession();
+            session.beginTransaction();
+
+            Employee myEmployee = session.get(Employee.class, id);
+            myEmployee.setLastName(lastName);
+            session.getTransaction().commit();
+        } finally {
+            factory.close();
+        }
+    }
+
+    private static void updateCompany (int id, String company) {
+
+        SessionFactory factory = new Configuration().configure("hibernate.cfg.xml")
+                .addAnnotatedClass(Employee.class)
+                .buildSessionFactory();
+
+        try {
+            Session session = factory.getCurrentSession();
+            session.beginTransaction();
+
+            Employee myEmployee = session.get(Employee.class, id);
+            myEmployee.setCompany(company);
+            session.getTransaction().commit();
+        } finally {
+            factory.close();
+        }
+    }
+
     private static void retrieve (int id) {
 
         //create session factory this is for hibernate
@@ -101,7 +155,46 @@ public class MainApplication {
         }
     }
 
-    private static void chose (int chose) {
+    private static void updateChose () {
+        System.out.println();
+        System.out.print("Enter the id of the employee who you want to update: ");
+        int id = getInput.nextInt();
+        System.out.println();
+        System.out.println("What do you want to do with the employee information?");
+        System.out.println("\t1.Update first name");
+        System.out.println("\t2.Update last name");
+        System.out.println("\t3.Update company");
+        int chose = getInput.nextInt();
+
+        if (chose == 1) {
+            System.out.print("Enter the employee new first name: ");
+            String firstName = getInput.next();
+            updateFirstName(id, firstName);
+        } else if (chose == 2) {
+            System.out.print("Enter the employee new last name: ");
+            String lastName = getInput.next();
+            updateLastName(id, lastName);
+        } else if (chose == 3) {
+            System.out.print("Enter the employee new company name: ");
+            String company = getInput.next();
+            updateCompany(id, company);
+        } else {
+            System.out.println("Invalid input!");
+            System.exit(-1);
+        }
+    }
+
+    private static void startApplication () {
+        System.out.println();
+        System.out.println("What do you want to do with the Employee database?");
+        System.out.println("\t1.Add employee information");
+        System.out.println("\t2.Get employee information by id");
+        System.out.println("\t3.Get employee information by company");
+        System.out.println("\t4.Delete employee information");
+        System.out.println("\t5.Update employee information");
+
+        int chose = getInput.nextInt();
+
         if (chose == 1) {
             System.out.print("Enter employee firstname: ");
             String firstName = getInput.next();
@@ -122,6 +215,8 @@ public class MainApplication {
             System.out.print("Enter employee id: ");
             int id = getInput.nextInt();
             delete(id);
+        } else if (chose == 5) {
+            updateChose();
         } else {
             System.out.println("invalid input");
             System.exit(-1);
@@ -132,16 +227,8 @@ public class MainApplication {
     public static void main(String[] args) {
         String answer = "";
         do {
-            System.out.println();
-            System.out.println("What do you want to do with the Employee database?");
-            System.out.println("\t1.Add employee information");
-            System.out.println("\t2.Get employee information by id");
-            System.out.println("\t3.Get employee information by company");
-            System.out.println("\t4.Delete employee information");
 
-            int chose = getInput.nextInt();
-
-            chose(chose);
+            startApplication();
 
             System.out.println("Do you want to continue: (yes or no)\n");
             answer = getInput.next();
